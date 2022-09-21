@@ -1,0 +1,121 @@
+﻿@model Lab.MVC.Models.Item
+@using Lab.MVC.ViewModels;
+
+@{
+    ViewBag.Title = "Itens";
+}
+
+<h2>Inclusão de Itens</h2>
+
+<div class="row">
+    <div class="col-md-6">
+        <h3>Cadastro</h3>
+        @using (Html.BeginForm())
+        {
+            @Html.AntiForgeryToken()
+
+            <div class="form-horizontal">
+
+                <hr />
+                @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+                <div class="form-group">
+                    @Html.LabelFor(model => model.IdPedido, htmlAttributes:
+                        new { @class = "control-label col-md-2" })
+                    <div class="col-md-10">
+
+                        @Html.DropDownList("idPedido",
+                            (SelectList)ViewBag.ListaDePedidos,
+                            "SELECIONE",
+                            new { @class = "form-control" })
+
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    @Html.LabelFor(model => model.IdProduto, htmlAttributes:
+                        new { @class = "control-label col-md-2" })
+                    <div class="col-md-10">
+                        @Html.DropDownListFor(
+                            model => model.IdProduto,
+                            (SelectList)ViewBag.ListaDeProdutos,
+                            new { @class = "form-control" })
+                        @Html.ValidationMessageFor(model => model.IdProduto, "",
+                            new { @class = "text-danger" })
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    @Html.LabelFor(model => model.Quantidade, htmlAttributes:
+                        new { @class = "control-label col-md-2" })
+                    <div class="col-md-10">
+                        @Html.EditorFor(model => model.Quantidade,
+                            new { htmlAttributes = new { @class = "form-control" } })
+                        @Html.ValidationMessageFor(model => model.Quantidade, "",
+                        new { @class = "text-danger" })
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <div class="col-md-offset-2 col-md-10">
+                        <input type="submit" value="Adicionar Item"
+                               class="btn btn-info" />
+                    </div>
+                </div>
+            </div>
+        }
+    </div>
+    <div class="col-md-6">
+        <h3>Lista de Itens do Pedido</h3>
+
+        @{
+            List<ItensPedidoViewModel> lista = ViewBag.ListaDeItens;
+            if (lista == null || lista.Count == 0)
+            {
+                <div class="alert alert-danger">
+                    Nenhum item ou nenhum pedido selecionado
+                </div>
+
+            }
+            else
+            {
+                foreach (var item in lista)
+                {
+                    <div class="alert alert-info">
+                        <div style="float:right">
+                            @Html.ActionLink("x", "Remover", "Itens", new
+                            {
+                            id = item.IdItem
+                            },
+                            new
+                                 {
+                                     role = "button",
+                                style = "text-decoration:none;"
+                                 })
+                        </div>
+                        <strong>Pedido: </strong>
+                        @item.NumeroPedido
+                        &nbsp;&nbsp; <strong>Produto: </strong>
+                        @item.DescProduto
+                        <br />
+                        <strong>Quant. Itens:</strong>
+                        @item.QuantItens
+                        &nbsp;&nbsp; <strong>Valor: </strong>
+                        @item.TotalItem.ToString("c")
+                    </div>
+                }
+            }
+        }
+
+    </div>
+</div>
+@section Scripts{
+    <script type="text/javascript">
+        $(document).ready(function () {
+            $("#idPedido").change(function () {
+                var selecao = $(this).val();
+                $(location).attr("href", "/Itens/Incluir?idPedido=" + selecao);
+            });
+        });
+    </script>
+
+}

@@ -1,0 +1,51 @@
+﻿@model IEnumerable<Lab.MVC.Models.Cliente>
+
+@{
+    ViewBag.Title = "Listar";
+}
+
+<h2>Listar Clientes</h2>
+
+<p>
+    @Html.ActionLink("Novo Cliente", "Incluir")
+</p>
+<table class="table table-striped">
+    <tr>
+        <th>
+            @Html.DisplayNameFor(model => model.Documento)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Nome)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Telefone)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Email)
+        </th>
+        <th></th>
+    </tr>
+
+@foreach (var item in Model) {
+    <tr>
+        <td>
+            @Html.DisplayFor(modelItem => item.Documento)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.Nome)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.Telefone)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.Email)
+        </td>
+        <td>
+            @Html.ActionLink("Alterar", "Alterar", new { id=item.Documento }) |
+            @Html.ActionLink("Ver Detalhes", "Detalhes", new { id=item.Documento }) |
+            @Html.ActionLink("Remover", "Remover", new { id=item.Documento })
+        </td>
+    </tr>
+}
+
+</table>
